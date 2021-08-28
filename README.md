@@ -15,6 +15,7 @@ Easy deploy to AWS with serverless cli.
 
 ```
 npm install
+serverless create_domain --region <region>
 serverless deploy --region <region> --stage <stage>
 ```
 

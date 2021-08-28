@@ -5,12 +5,28 @@ frameworkVersion: '2'
 custom:
   customDomains:
   - domainName: mt.ax
+    stage: prod
     basePath: ''
     certificateName: 'mt.ax'
     endpointType: 'regional'
     securityPolicy: tls_1_2
     createRoute53Record: false
   - domainName: www.mt.ax
+    stage: prod
+    basePath: ''
+    certificateName: 'mt.ax'
+    endpointType: 'regional'
+    securityPolicy: tls_1_2
+    createRoute53Record: false
+  - domainName: stage.mt.ax
+    stage: stage
+    basePath: ''
+    certificateName: 'mt.ax'
+    endpointType: 'regional'
+    securityPolicy: tls_1_2
+    createRoute53Record: false
+  - domainName: dev.mt.ax
+    stage: dev
     basePath: ''
     certificateName: 'mt.ax'
     endpointType: 'regional'
@@ -34,9 +50,11 @@ provider:
         - Fn::GetAtt:
           - shortUrlTable
           - Arn
+  environment:
+    env: ${opt:stage, self:provider.stage, "dev"}
 
 package:
-  patters:
+  patterns:
   - src/**
   - '!.git/**'
   - '!.github/**'
@@ -58,7 +76,7 @@ resources:
     shortUrlTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: mtax_shorturls
+        TableName: mtax_${opt:stage, self:provider.stage, "dev"}_shorturls
         AttributeDefinitions:
           - AttributeName: shorturl
             AttributeType: S

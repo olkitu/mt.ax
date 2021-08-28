@@ -28,7 +28,7 @@ module.exports.handler = async (event, context, callback) => {
   }
 
   var params = {
-    TableName: 'mtax_shorturls',
+    TableName: 'mtax_' + process.env.env + '_shorturls',
     KeyConditionExpression: 'shorturl = :a',
     ExpressionAttributeValues: {
       ":a": shorturl
