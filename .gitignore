@@ -9,3 +9,6 @@ jspm_packages
 .env
 .env.stage
 .env.prod
+
+# DynamoDB Local
+.dynamodb

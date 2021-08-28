@@ -19,10 +19,23 @@ serverless create_domain --region <region>
 serverless deploy --region <region> --stage <stage>
 ```
 
-### Import example data
+## Develop
 
-You can import example data to DynamoDB for testing purpose
+Install NodeJS packages
 
 ```
-aws dynamodb batch-write-item --region eu-west-1 --request-items file://example_items.json
+npm install
+```
+
+Start locally api gateway
+
+```
+serverless offline
+```
+
+Install dynamodb locally and migrate schema
+
+```
+serverless dynamodb install
+serverless dynamodb start
 ```
