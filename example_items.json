@@ -1,0 +1,20 @@
+{
+    "mtax_shorturls": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "shorturl": {"S": "demo"},
+                    "destinationurl": {"S":"https://google.com"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "shorturl": {"S":"test"},
+                    "destinationurl": {"S":"https://youtube.com"}
+                }
+            }
+        }
+    ]
+}

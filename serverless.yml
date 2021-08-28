@@ -1,0 +1,72 @@
+service: mtax-shorturl-service
+
+frameworkVersion: '2'
+
+custom:
+  customDomains:
+  - domainName: mt.ax
+    basePath: ''
+    certificateName: 'mt.ax'
+    endpointType: 'regional'
+    securityPolicy: tls_1_2
+    createRoute53Record: false
+  - domainName: www.mt.ax
+    basePath: ''
+    certificateName: 'mt.ax'
+    endpointType: 'regional'
+    securityPolicy: tls_1_2
+    createRoute53Record: false
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  lambdaHashingVersion: '20201221'
+  deploymentBucket:
+    blockPublicAccess: true
+  logRetentionInDays: 30
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+      - dynamodb:DescribeTable
+      - dynamodb:Query
+      - dynamodb:GetItem
+      Resource:
+        - Fn::GetAtt:
+          - shortUrlTable
+          - Arn
+
+package:
+  patters:
+  - src/**
+  - '!.git/**'
+  - '!.github/**'
+  - '!.gitlab-ci.yml'
+
+functions:
+  shorturl:
+    handler: src/redirect.handler
+    events:
+      - http:
+          path: /
+          method: get
+      - http:
+          path: /{shorturl}
+          method: get
+  
+resources:
+  Resources:
+    shortUrlTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: mtax_shorturls
+        AttributeDefinitions:
+          - AttributeName: shorturl
+            AttributeType: S
+        KeySchema:
+          - AttributeName: shorturl
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+plugins:
+- serverless-domain-manager
+- serverless-offline
