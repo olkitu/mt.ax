@@ -60,6 +60,8 @@ module.exports.handler = async (event, context, callback) => {
 
     const destinationurl = JSON.stringify(data.Items[0].destinationurl).replace(/['"]+/g, '')
 
+    console.log('Redirecting to ' + destinationurl)
+
     return { 
       statusCode: 301,
       body: JSON.stringify({
